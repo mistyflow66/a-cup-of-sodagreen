@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>來點蘇打綠ᐠ( ᐛ )ᐟ</title>
+    <style>
+        body {
+            font-family: '微軟正黑體', 'Microsoft JhengHei', sans-serif;
+            background-color: #f0f0e8;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            min-height: 100vh;
+            margin: 0;
+            line-height: 1.8;
+        }
+
+        #container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 90%;
+            text-align: center;
+        }
+
+        #generateBtn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 30px;
+            transition: background-color 0.3s;
+        }
+
+        #generateBtn:hover {
+            background-color: #45a049;
+        }
+
+        #lyricOutput {
+            margin-top: 30px;
+            min-height: 150px;
+        }
+
+        #lyricText {
+            font-size: 28px;
+            font-weight: bold;
+            color: #008080;
+            margin-bottom: 15px;
+            opacity: 0; 
+            transition: opacity 0.5s;
+        }
+        
+        #songTitle {
+            font-size: 18px;
+            color: #777;
+            opacity: 0; 
+            transition: opacity 0.5s;
+        }
+
+        #videoContainer {
+            width: 100%;
+            max-width: 560px;
+            margin: 20px auto 0;
+            aspect-ratio: 16 / 9; 
+            overflow: hidden;
+            display: none;
+        }
+
+        #youtubePlayer {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        #submissionLink {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ccc;
+            width: 100%;
+        }
+
+        #submissionLink a {
+            font-size: 18px;
+            color: #008080; 
+            text-decoration: underline; 
+        }
+    </style>
+</head>
+<body>
+
+    <div id="container">
+        <h1>來點蘇打綠ᐠ( ᐛ )ᐟ</h1>
+        <p>按下按鈕，讓音樂為你解答今日的疑惑。</p>
+
+        <button id="generateBtn" onclick="getRandomLyric()">抽取！</button>
+
+        <div id="lyricOutput">
+            <div id="lyricText"></div>
+            <div id="songTitle"></div>
+        </div>
+        
+        <hr style="width: 50%; border-top: 1px dashed #ccc;">
+
+        <div id="videoContainer">
+            <iframe id="youtubePlayer" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+
+        <div id="submissionLink">
+            <a 
+                href="https://docs.google.com/forms/d/e/1FAIpQLScvXqQpys7MC3jdPW60TcvJQpyDJ8XHzQfWWWsvr8f26Tlh1Q/viewform?usp=sf_link" 
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                歌詞投稿表單
+            </a>
+        </div>
+    </div>
+
+    <script>
+        const sodagreenLyrics = [
+            {
+                "song": "窺",
+                "lyrics": "把太陽一口吹熄找不到邏輯，反正這世界本來就沒道理。",
+                "youtube_id": "2PXm7MI_bHI",
+                "start_seconds": 54
+            },
+            {
+                "song": "窺",
+                "lyrics": "放一顆星球在你的眉頭，等你開口再長出宇宙。",
+                "youtube_id": "2PXm7MI_bHI",
+                "start_seconds": 132
+            },
+            {
+                "song": "你心裡最後一個",
+                "lyrics": "快樂請煙火地嚷，憂傷請汪洋地放。",
+                "youtube_id": "jeNbimhDs_0",
+                "start_seconds": 132
+            },
+            {
+                "song": "你心裡最後一個",
+                "lyrics": "沉甸甸的寧靜上，輕飄飄的精靈光，趕走失眠裡的羊，不需為幻象害怕。",
+                "youtube_id": "jeNbimhDs_0",
+                "start_seconds": 152
+            },
+            {
+                "song": "交響夢",
+                "lyrics": "氣候的成長  季風的回憶  收進課本裡\n我自己來縫補我自己",
+                "youtube_id": "gQ0IkDrcam8",
+                "start_seconds": 193
+            },
+            {
+                "song": "各站停靠：",
+                "lyrics": "當我還是蝴蝶的時候，我不知道自己如此地快樂。",
+                "youtube_id": "I6UB80IyrzA",
+                "start_seconds": 63
+            },
+            {
+                "song": "各站停靠：",
+                "lyrics": "懂得太多的人，被心眼絆倒，在計較間迷走打轉\n而那不怕貘、不懂生死的翅膀，正飛舞在最美的風景間",
+                "youtube_id": "I6UB80IyrzA",
+                "start_seconds": 148
+            },
+            {
+                "song": "日光",
+                "lyrics": "美好是因為挑戰無私的天真\n罪惡是因為克服背叛的恐懼",
+                "youtube_id": "9YSLc_-iGOk",
+                "start_seconds": 48
+            },
+            {
+                "song": "嬉戲之後",
+                "lyrics": "如果你身邊找不到酒  把自己的影子飲用\n如果你覺得有點詞窮  讓四隻眼睛來溝通",
+                "youtube_id": "mklDXcmHxLM",
+                "start_seconds": 28
+            },
+            {
+                "song": "嬉戲之後",
+                "lyrics": "我說我說  像手牽手\n距離的噪音化為烏有",
+                "youtube_id": "mklDXcmHxLM",
+                "start_seconds": 57
+            },
+            {
+                "song": "嬉戲之後",
+                "lyrics": "你說你說  我聽個夠\n煩惱像跳蚤 指甲一掐 成末\n俐落 就趕走",
+                "youtube_id": "mklDXcmHxLM",
+                "start_seconds": 64
+            },
+            {
+                "song": "飛魚",
+                "lyrics": "看天國 看快活 看眼角耳際開出花朵",
+                "youtube_id": "pNRsNFaCqOM",
+                "start_seconds": 53
+            },
+            {
+                "song": "飛魚",
+                "lyrics": "看遨遊 看沉沒 看飛過天堂人間生的耳膜",
+                "youtube_id": "pNRsNFaCqOM",
+                "start_seconds": 60
+            },
+            {
+                "song": "飛魚",
+                "lyrics": "儘管痛苦麻痺還是那麼多 天空就算不藍或許還有彩虹",
+                "youtube_id": "pNRsNFaCqOM",
+                "start_seconds": 68
+            },
+            {
+                "song": "飛魚",
+                "lyrics": "開花不結果又有什麼？ 是魚就一定要游泳？",
+                "youtube_id": "pNRsNFaCqOM",
+                "start_seconds": 102
+            },
+            {
+                "song": "飛魚",
+                "lyrics": "衝破極限想尋找什麼？ 一定找得到沒有過！",
+                "youtube_id": "pNRsNFaCqOM",
+                "start_seconds": 81
+            },
+            {
+                "song": "飛魚",
+                "lyrics": "不要躲 會看到更多感受\n不要捉 會把自己逼到角落",
+                "youtube_id": "pNRsNFaCqOM",
+                "start_seconds": 159
+            },
+            {
+                "song": "飛魚",
+                "lyrics": "找線索 找窗口 鑽出海平面烏雲的舌頭要解脫",
+                "youtube_id": "pNRsNFaCqOM",
+                "start_seconds": 215
+            },
+            {
+                "song": "飛魚",
+                "lyrics": "不管飛行還是蹉跎 都仍是自己的生活\n煩惱不會憑空 不如捕捉笑聲塗上耳朵",
+                "youtube_id": "pNRsNFaCqOM",
+                "start_seconds": 238
+            },
+            {
+                "song": "飛魚",
+                "lyrics": "換一個輪廓 快樂比較多 放自己好過",
+                "youtube_id": "pNRsNFaCqOM",
+                "start_seconds": 259
+            },
+            {
+                "song": "降落練習存在孿生基因",
+                "lyrics": "降落練習同時 也屬於上升的飛行",
+                "youtube_id": "YZnW1f2a9Rk",
+                "start_seconds": 17
+            },
+            {
+                "song": "相對論IV",
+                "lyrics": "夢想沒有刻度 他忽焉在前忽焉在後\n讓人躊躇 不知該往前還是往後",
+                "youtube_id": "IfVorigi_fo",
+                "start_seconds": 46
+            },
+            {
+                "song": "相對論IV",
+                "lyrics": "就算痴人唱夢 那又怎樣\n最終不會是白忙 來瘋狂瘋狂",
+                "youtube_id": "IfVorigi_fo",
+                "start_seconds": 167
+            },
+            {
+                "song": "包圍",
+                "lyrics": "誰都沒有權力能支配\n我一生一趟忠於自己的表演",
+                "youtube_id": "6z22c__cU94",
+                "start_seconds": 237
+            },
+            {
+                "song": "狂熱",
+                "lyrics": "任憑時光你是多狠 我要我的選擇 為了快樂抗爭",
+                "youtube_id": "mvAJ-KwhGrk",
+                "start_seconds": 81
+            },
+            {
+                "song": "近未來",
+                "lyrics": "交替的身邊的不同氣味，\n沉澱出所有殘缺的不可或缺。",
+                "youtube_id": "ufXhlfw2Gmk",
+                "start_seconds": 66
+            },
+            {
+                "song": "近未來",
+                "lyrics": "多少次寧願都重新開始，\n過去一直去，未來一直來，只有現在......",
+                "youtube_id": "ufXhlfw2Gmk",
+                "start_seconds": 241
+            },
+            {
+                "song": "遊樂",
+                "lyrics": "哪裡來遊樂  一切輕巧明白痛快地發洩\n哪裡來遊樂  拋開善感耍賴自在地沉醉",
+                "youtube_id": "vufjihmcDxw",
+                "start_seconds": 37
+            },
+            {
+                "song": "遊樂",
+                "lyrics": "哪裡都遊樂  繽紛黑暗光明渾沌的吹灰\n哪裡都遊樂  鳥泅泳魚在飛貓咪疊成堆",
+                "youtube_id": "vufjihmcDxw",
+                "start_seconds": 105
+            },
+            {
+                "song": "左邊",
+                "lyrics": "握你的左手  散落在我手中的是溫柔",
+                "youtube_id": "kgZ7TXLNy1U",
+                "start_seconds": 94
+            },
+            {
+                "song": "無與倫比的美麗",
+                "lyrics": "你若擔心你不能飛\n你有我的蝴蝶",
+                "youtube_id": "K9hndts65_E",
+                "start_seconds": 39
+            },
+            {
+                "song": "無與倫比的美麗",
+                "lyrics": "我若擔心我不能飛\n我有你的草原",
+                "youtube_id": "K9hndts65_E",
+                "start_seconds": 59
+            },
+            {
+                "song": "無與倫比的美麗",
+                "lyrics": "嘿  嘿  你知道當你需要個夏天我會拼了命努力",
+                "youtube_id": "K9hndts65_E",
+                "start_seconds": 121
+            }
+        ];
+
+        function getRandomLyric() {
+            const randomIndex = Math.floor(Math.random() * sodagreenLyrics.length);
+            const item = sodagreenLyrics[randomIndex];
+
+            const lyricTextEl = document.getElementById('lyricText');
+            const songTitleEl = document.getElementById('songTitle');
+            const videoContainerEl = document.getElementById('videoContainer');
+            const youtubePlayerEl = document.getElementById('youtubePlayer');
+
+            lyricTextEl.style.opacity = '0';
+            songTitleEl.style.opacity = '0';
+
+            setTimeout(() => {
+                lyricTextEl.textContent = item.lyrics.replace(/\n/g, ' '); 
+                songTitleEl.textContent = `- ${item.song} -`;
+                lyricTextEl.style.opacity = '1';
+                songTitleEl.style.opacity = '1';
+            }, 100); 
+
+            if (item.youtube_id) {
+                let iframeSrc = `https://www.youtube.com/embed/${item.youtube_id}?enablejsapi=1&autoplay=1&rel=0`; 
+
+                if (item.start_seconds && item.start_seconds > 0) {
+                    iframeSrc += `&start=${item.start_seconds}`;
+                }
+
+                youtubePlayerEl.src = iframeSrc;
+                videoContainerEl.style.display = 'block';
+            } else {
+                youtubePlayerEl.src = '';
+                videoContainerEl.style.display = 'none';
+            }
+        }
+
+        document.getElementById('generateBtn').addEventListener('click', getRandomLyric);
+    </script>
+</body>
+</html>
