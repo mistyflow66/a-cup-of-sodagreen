@@ -154,6 +154,7 @@
             // 1. 載入資料 (只在第一次點擊或載入時執行)
             if (allLyricsData.length === 0) {
                 lyricTextEl.textContent = '資料載入中，請稍候...';
+                lyricTextEl.style.opacity = '1'
                 
                 try {
                     // 使用 fetch 讀取 Apps Script 提供的 JSON
@@ -217,5 +218,6 @@ if (youtubeID) {
     </script>
 </body>
 </html>
+
 
 
