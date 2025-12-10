@@ -1,14 +1,15 @@
 # 💚 a-cup-of-sodagreen
 
-**網站連結：[來點蘇打綠ᐠ( ᐛ )ᐟ](https://mistyflow66.github.io/a-cup-of-sodagreen/)**
+* **網站連結：[來點蘇打綠ᐠ( ᐛ )ᐟ](https://mistyflow66.github.io/a-cup-of-sodagreen/)**
 
 > A digital Sodagreen Oracle. Click to receive a random lyric for daily guidance, paired with a timestamped YouTube MV of the corresponding song.
 
 ---
-
 ## ⚙️ 系統運作核心邏輯 (System Logic)
 
-這個專案是一個由 **Google 試算表** 驅動的隨機歌詞抽取器，結合雲端後端服務 (Apps Script) 和靜態網頁 (GitHub Pages) 來實現數據的動態展示。
+這個專案是一個由 Google 試算表驅動的隨機歌詞抽取器，結合雲端後端服務 (Apps Script) 和靜態網頁 (GitHub Pages) 來實現數據的動態展示。
+
+透過 Google 表單和試算表進行即時新增和管理歌詞，**無需修改任何前端或後端程式碼**即可完成數據維護。
 
 ### 1. 核心元件架構
 
@@ -57,7 +58,7 @@
 
 ### 🛠️ 參與及回饋
 
-如果您發現任何歌詞錯誤，或有**更多喜歡的歌詞想加入資料庫**：
+如果您發現任何內容錯誤，或有**更多喜歡的歌詞想加入資料庫**：
 
 * **歌詞投稿表單：**
     [![投稿表單](https://img.shields.io/badge/Google%20Forms-%E6%AD%8C%E8%A9%9E%E6%8A%95%E7%A8%BF-4CAF50?style=for-the-badge&logo=google-forms)](https://docs.google.com/forms/d/e/1FAIpQLScvXqQpys7MC3jdPW60TcvJQpyDJ8XHzQfWWWsvr8f26Tlh1Q/viewform?usp=sf_link)
