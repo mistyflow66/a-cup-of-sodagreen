@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>來點蘇打綠ᐠ( ᐛ )ᐟ</title>
     <style>
-        /* 您的原始 CSS 框架 */
+        /* 原始 CSS 框架 */
         body {
             font-family: '微軟正黑體', 'Microsoft JhengHei', sans-serif;
             background-color: #f0f0e8; 
@@ -195,11 +195,14 @@
             const youtubeID = extractYouTubeID(item['網址']);
             
             if (youtubeID) {
-                let iframeSrc = `https://www.youtube.com/embed/$${youtubeID}?enablejsapi=1&autoplay=1&rel=0`; 
+                // 修正點一：協定修正為 https://
+                // 修正點二：網域修正為 youtube-nocookie.com/embed/
+                // 嘗試修復嵌入播放錯誤
+                let iframeSrc = `http://googleusercontent.com/youtube-nocookie.com/embed/${youtubeID}?enablejsapi=1&autoplay=1&rel=0`; 
                 
-                // 檢查起始秒數
-                if (item['起始秒數'] && item['起始秒數'] > 0) {
-                    iframeSrc += `&start=${item['起始秒數']}`;
+                // 修正點三：欄位名稱修正為 '起始秒數（選填）'
+                if (item['起始秒數（選填）'] && item['起始秒數（選填）'] > 0) {
+                    iframeSrc += `&start=${item['起始秒數（選填）']}`;
                 }
 
                 youtubePlayerEl.src = iframeSrc;
