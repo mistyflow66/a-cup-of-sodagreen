@@ -59,6 +59,11 @@
             transition: opacity 0.5s;
         }
         
+        #lyricText.loading {
+    font-size: 20px !important;  /* 載入時變小 */
+    color: #666 !important;
+        }
+        
         #songTitle {
             font-size: 18px;
             color: #777;
@@ -153,8 +158,9 @@
 
             // 1. 載入資料 (只在第一次點擊或載入時執行)
             if (allLyricsData.length === 0) {
-                lyricTextEl.textContent = '資料載入中，請稍候...';
+                lyricTextEl.textContent = '🎵載入中，請稍候...';
                 lyricTextEl.style.opacity = '1'
+                    lyricTextEl.classList.add('loading');
                 
                 try {
                     // 使用 fetch 讀取 Apps Script 提供的 JSON
@@ -184,6 +190,7 @@
             // 3. 更新歌詞 (使用中文鍵名：'歌詞' 和 '歌名')
             lyricTextEl.style.opacity = '0';
             songTitleEl.style.opacity = '0';
+            lyricTextEl.classList.remove('loading');  
 
             setTimeout(() => {
                 lyricTextEl.textContent = item['歌詞'];
@@ -218,6 +225,7 @@ if (youtubeID) {
     </script>
 </body>
 </html>
+
 
 
 
