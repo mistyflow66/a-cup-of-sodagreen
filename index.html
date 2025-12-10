@@ -200,7 +200,7 @@
             }, 100); 
 
             // 4. 處理 MV 嵌入 (使用中文鍵名：'網址' 和 '起始秒數')
-const youtubeID = extractYouTubeID(item['網址']);
+const youtubeID = extractYouTubeID(item['官方MV網址']);
 
 if (youtubeID) {
     let iframeSrc = `https://www.youtube-nocookie.com/embed/${youtubeID}?enablejsapi=1&autoplay=1&rel=0`; 
@@ -225,6 +225,7 @@ if (youtubeID) {
     </script>
 </body>
 </html>
+
 
 
 
