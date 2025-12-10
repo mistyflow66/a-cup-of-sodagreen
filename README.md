@@ -1,6 +1,6 @@
 # 💚 a-cup-of-sodagreen
 
-**[網站連結](https://mistyflow66.github.io/a-cup-of-sodagreen/)**
+**網站連結：[來點蘇打綠ᐠ( ᐛ )ᐟ](https://mistyflow66.github.io/a-cup-of-sodagreen/)**
 
 > A digital Sodagreen Oracle. Click to receive a random lyric for daily guidance, paired with a timestamped YouTube MV of the corresponding song.
 
