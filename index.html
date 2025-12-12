@@ -60,8 +60,8 @@
         }
         
         #lyricText.loading {
-    font-size: 20px !important;  /* 載入時變小 */
-    color: #666 !important;
+            font-size: 20px !important;  /* 載入時變小 */
+            color: #666 !important;
         }
         
         #songTitle {
@@ -108,7 +108,8 @@
         <div id="videoContainer">
             <iframe id="youtubePlayer" allow="autoplay; encrypted-media" allowfullscreen></iframe>
         </div>
-    </div> <footer style="margin-top: 40px; padding: 20px; text-align: center; font-size: 14px; color: #666; border-top: 1px solid #eee;">
+    </div> 
+    <footer style="margin-top: 40px; padding: 20px; text-align: center; font-size: 14px; color: #666; border-top: 1px solid #eee;">
         
         <p style="margin-bottom: 5px; font-weight: bold; color: #4CAF50;">
             【非官方版權聲明】
@@ -136,6 +137,13 @@
         
         let allLyricsData = [];
         
+        // =======================================================
+        // 新增感知隨機性所需的全域變數
+        // =======================================================
+        const HISTORY_SIZE = 10;
+        const historyTitles = []; // 儲存最近 10 次抽到的歌名
+
+        
         // --- 輔助函式：從 YouTube URL 中提取 ID ---
         function extractYouTubeID(url) {
             if (!url) return null;
@@ -160,7 +168,7 @@
             if (allLyricsData.length === 0) {
                 lyricTextEl.textContent = '🎵載入中，請稍候...';
                 lyricTextEl.style.opacity = '1'
-                    lyricTextEl.classList.add('loading');
+                lyricTextEl.classList.add('loading');
                 
                 try {
                     // 使用 fetch 讀取 Apps Script 提供的 JSON
@@ -183,51 +191,62 @@
                 }
             }
 
-            // 2. 隨機抽取一筆資料
-            const randomIndex = Math.floor(Math.random() * allLyricsData.length);
-            const item = allLyricsData[randomIndex];
+            // 2. 隨機抽取一筆資料 (已優化：感知隨機性抽取)
+            let item;
+            let selectedTitle;
             
-            // 3. 更新歌詞 (使用中文鍵名：'歌詞' 和 '歌名')
+            // 只有當總資料筆數大於緩存大小時才執行不重複檢查
+            const shouldCheckHistory = allLyricsData.length > HISTORY_SIZE;
+            
+            // 使用 do...while 循環，確保抽到的歌名不在 historyTitles 中
+            do {
+                const randomIndex = Math.floor(Math.random() * allLyricsData.length);
+                item = allLyricsData[randomIndex];
+                selectedTitle = item['歌名']; 
+            } while (shouldCheckHistory && historyTitles.includes(selectedTitle));
+            
+            // 3. 維護歷史記錄緩存 (新增邏輯)
+            historyTitles.push(selectedTitle); 
+            
+            if (historyTitles.length > HISTORY_SIZE) {
+                historyTitles.shift(); // 移除最舊的記錄
+            }
+            
+            // 4. 更新歌詞
             lyricTextEl.style.opacity = '0';
             songTitleEl.style.opacity = '0';
             lyricTextEl.classList.remove('loading');  
 
             setTimeout(() => {
                 lyricTextEl.textContent = item['歌詞'];
-                songTitleEl.textContent = `- ${item['歌名']} -`;
+                songTitleEl.textContent = `- ${selectedTitle} -`; // 使用已確認不重複的 selectedTitle
                 lyricTextEl.style.opacity = '1';
                 songTitleEl.style.opacity = '1';
             }, 100); 
 
-            // 4. 處理 MV 嵌入 (使用中文鍵名：'網址' 和 '起始秒數')
-const youtubeID = extractYouTubeID(item['官方MV網址']);
+            // 5. 處理 MV 嵌入
+            // 由於您的 Apps Script 輸出欄位名可能是 '網址'，這裡應使用 '網址' 或 '官方MV網址' 中正確的那個
+            // 這裡保留您原始程式碼中的 '官方MV網址'，如果您的 Apps Script 輸出的是 '網址'，請手動修改
+            const youtubeID = extractYouTubeID(item['官方MV網址']); 
 
-if (youtubeID) {
-    let iframeSrc = `https://www.youtube-nocookie.com/embed/${youtubeID}?enablejsapi=1&autoplay=1&rel=0`; 
-    
-    if (item['起始秒數（選填）'] && item['起始秒數（選填）'] > 0) {
-        iframeSrc += `&start=${item['起始秒數（選填）']}`;
-    }
+            if (youtubeID) {
+                let iframeSrc = `https://www.youtube-nocookie.com/embed/${youtubeID}?enablejsapi=1&autoplay=1&rel=0`; 
+                
+                if (item['起始秒數（選填）'] && item['起始秒數（選填）'] > 0) {
+                    iframeSrc += `&start=${item['起始秒數（選填）']}`;
+                }
 
-    youtubePlayerEl.src = iframeSrc;
-    videoContainerEl.style.display = 'block';
-} else {
-    youtubePlayerEl.src = '';
-    videoContainerEl.style.display = 'none';
-}
+                youtubePlayerEl.src = iframeSrc;
+                videoContainerEl.style.display = 'block';
+            } else {
+                youtubePlayerEl.src = '';
+                videoContainerEl.style.display = 'none';
+            }
         }
 
-        // 綁定按鈕和頁面載入
+        // 綁定按鈕
         document.getElementById('generateBtn').addEventListener('click', loadAndGenerateLyric);
-        
-        // 移除頁面載入時首次運行window.onload = loadAndGenerateLyric
         
     </script>
 </body>
 </html>
-
-
-
-
-
-
